@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Social Dilemma</title>
+</head>
+<body style="all:initial;display:block;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;background:#f4f4f0;color:#18181b;line-height:1.5;margin:0;padding:0;">
+
+<div style="all:initial;display:block;max-width:680px;margin:0 auto;padding:1.5rem 1rem 3rem;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;color:#18181b;box-sizing:border-box;">
+
+  <!-- Header -->
+  <div style="display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:1.25rem;">
+    <div>
+      <div style="font-size:20px;font-weight:700;color:#18181b;">The Social Dilemma</div>
+      <div style="font-size:13px;color:#52525b;margin-top:2px;">Individual gain vs. collective good — class of 30</div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <span style="font-size:13px;color:#a1a1aa;">Round</span>
+      <span id="hdr-round" style="font-size:15px;font-weight:700;color:#18181b;">1</span>
+      <span style="font-size:13px;color:#a1a1aa;">of 5</span>
+    </div>
+  </div>
+
+  <!-- Rules card -->
+  <div style="background:#ffffff;border:1.5px solid #d4d4d8;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
+    <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:0.85rem;">How it works</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="display:flex;gap:8px;align-items:flex-start;">
+        <span style="display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;background:#eaf3de;color:#3b6d11;flex-shrink:0;margin-top:2px;">C</span>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#18181b;">Cooperate</div>
+          <div style="font-size:12px;color:#52525b;">You earn $0. Every other student earns $1.</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:flex-start;">
+        <span style="display:inline-block;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;background:#fcebeb;color:#a32d2d;flex-shrink:0;margin-top:2px;">D</span>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#18181b;">Defect</div>
+          <div style="font-size:12px;color:#52525b;">You earn $2. Every other student earns $0.</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:0.85rem;padding-top:0.85rem;border-top:1px solid #e4e4e7;">
+      <div style="font-size:12px;color:#52525b;line-height:1.5;"><strong style="color:#18181b;">The dilemma:</strong> If everyone cooperates, each person earns $29 per round. If everyone defects, each earns $2. What will your class actually do?</div>
+    </div>
+  </div>
+
+  <!-- DECISION VIEW — visible by default, no JS needed to show it -->
+  <div id="view-decision">
+    <div style="background:#ffffff;border:1.5px solid #d4d4d8;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
+      <div style="font-size:13px;color:#a1a1aa;margin-bottom:0.5rem;">Round <span id="dec-round" style="color:#18181b;font-weight:700;">1</span> — your classmates are deciding.</div>
+      <div id="dec-pressure" style="margin-bottom:0.75rem;"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+
+        <button id="btn-c" onclick="choose('C')" style="all:unset;display:block;background:#f0fdf4;border:2.5px solid #639922;border-radius:12px;padding:1.25rem;cursor:pointer;text-align:left;width:100%;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+          <div style="font-size:26px;margin-bottom:8px;">🤝</div>
+          <div style="font-size:15px;font-weight:700;color:#3b6d11;margin-bottom:4px;">Cooperate</div>
+          <div style="font-size:12px;color:#52525b;">Write "C" on your paper</div>
+          <div style="margin-top:10px;background:#639922;color:#ffffff;text-align:center;border-radius:6px;padding:6px 0;font-size:13px;font-weight:700;">Choose C</div>
+        </button>
+
+        <button id="btn-d" onclick="choose('D')" style="all:unset;display:block;background:#fff5f5;border:2.5px solid #e24b4a;border-radius:12px;padding:1.25rem;cursor:pointer;text-align:left;width:100%;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
+          <div style="font-size:26px;margin-bottom:8px;">💸</div>
+          <div style="font-size:15px;font-weight:700;color:#a32d2d;margin-bottom:4px;">Defect</div>
+          <div style="font-size:12px;color:#52525b;">Write "D" on your paper</div>
+          <div style="margin-top:10px;background:#e24b4a;color:#ffffff;text-align:center;border-radius:6px;padding:6px 0;font-size:13px;font-weight:700;">Choose D</div>
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS VIEW -->
+  <div id="view-results" style="display:none;">
+    <div id="round-alert" style="margin-bottom:1rem;"></div>
+
+    <div style="background:#ffffff;border:1.5px solid #d4d4d8;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;">
+        <div>
+          <div style="font-size:12px;color:#a1a1aa;">Round <span id="res-round"></span> results</div>
+          <div style="font-size:15px;font-weight:700;margin-top:2px;">You <span id="res-choice-label"></span></div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:3px;">Your total</div>
+          <div id="res-total" style="font-size:24px;font-weight:700;color:#18181b;">$0</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem;">
+        <div style="background:#f4f4f0;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:3px;">Cooperated</div>
+          <div id="res-c" style="font-size:22px;font-weight:700;color:#3b6d11;">0</div>
+        </div>
+        <div style="background:#f4f4f0;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:3px;">Defected</div>
+          <div id="res-d" style="font-size:22px;font-weight:700;color:#a32d2d;">0</div>
+        </div>
+        <div style="background:#f4f4f0;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:3px;">You earned</div>
+          <div id="res-earned" style="font-size:22px;font-weight:700;color:#18181b;">$0</div>
+        </div>
+      </div>
+      <div style="margin-bottom:0.85rem;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#52525b;margin-bottom:4px;">
+          <span>Class cooperation rate</span>
+          <span id="res-coop-pct" style="font-weight:700;color:#18181b;">0%</span>
+        </div>
+        <div style="background:#e4e4e7;border-radius:4px;height:10px;overflow:hidden;">
+          <div id="res-bar" style="height:100%;border-radius:4px;background:#639922;width:0%;transition:width 0.4s ease;"></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:1.5rem;font-size:12px;padding-top:0.75rem;border-top:1px solid #e4e4e7;flex-wrap:wrap;">
+        <span style="color:#52525b;">Avg cooperator earned: <strong id="res-avg-c" style="color:#3b6d11;">$0</strong></span>
+        <span style="color:#52525b;">Avg defector earned: <strong id="res-avg-d" style="color:#a32d2d;">$0</strong></span>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin-bottom:1.25rem;">
+      <div style="background:#ffffff;border:1.5px solid #d4d4d8;border-radius:12px;padding:1.25rem;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:0.75rem;">Your standing</div>
+        <div style="display:flex;align-items:baseline;gap:6px;margin-bottom:4px;">
+          <span id="standing-rank" style="font-size:30px;font-weight:700;color:#185fa5;">#1</span>
+          <span style="font-size:13px;color:#a1a1aa;">of 30</span>
+        </div>
+        <div id="standing-context" style="font-size:12px;color:#52525b;line-height:1.4;margin-bottom:0.75rem;"></div>
+        <div style="padding-top:0.75rem;border-top:1px solid #e4e4e7;">
+          <div style="font-size:12px;color:#a1a1aa;margin-bottom:3px;">Top defector: <strong id="top-defector" style="color:#a32d2d;">–</strong></div>
+          <div style="font-size:12px;color:#a1a1aa;">Top cooperator: <strong id="top-cooperator" style="color:#3b6d11;">–</strong></div>
+        </div>
+      </div>
+      <div style="background:#ffffff;border:1.5px solid #d4d4d8;border-radius:12px;padding:1.25rem;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:0.75rem;">Class leaderboard</div>
+        <div id="leaderboard-rows" style="max-height:160px;overflow-y:auto;"></div>
+      </div>
+    </div>
+
+    <div id="history-card" style="background:#ffffff;border:1.5px solid #d4d4d8;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;display:none;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:0.75rem;">Round history</div>
+      <div id="history-rows"></div>
+    </div>
+
+    <button id="next-btn" onclick="nextRound()" style="all:unset;display:block;width:100%;box-sizing:border-box;background:#18181b;color:#ffffff;border-radius:8px;padding:1rem 1.5rem;font-weight:700;cursor:pointer;font-size:15px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">Next round →</button>
+  </div>
+
+  <!-- FINAL VIEW -->
+  <div id="view-final" style="display:none;">
+    <div style="background:#ffffff;border:1.5px solid #d4d4d8;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:1rem;">Simulation complete</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1.25rem;">
+        <div style="background:#f4f4f0;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:3px;">Final rank</div>
+          <div id="fin-rank" style="font-size:22px;font-weight:700;color:#185fa5;">#–</div>
+        </div>
+        <div style="background:#f4f4f0;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:3px;">Your total</div>
+          <div id="fin-total" style="font-size:22px;font-weight:700;color:#18181b;">$0</div>
+        </div>
+        <div style="background:#f4f4f0;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:3px;">Class avg</div>
+          <div id="fin-classavg" style="font-size:22px;font-weight:700;color:#18181b;">$0</div>
+        </div>
+        <div style="background:#f4f4f0;border-radius:8px;padding:0.75rem 1rem;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#a1a1aa;margin-bottom:3px;">Cooperation rate</div>
+          <div id="fin-coop" style="font-size:22px;font-weight:700;color:#3b6d11;">0%</div>
+        </div>
+      </div>
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:13px;font-weight:700;color:#18181b;margin-bottom:8px;">Final standings</div>
+        <div id="fin-leaderboard" style="max-height:220px;overflow-y:auto;border:1px solid #e4e4e7;border-radius:8px;padding:0 0.5rem;"></div>
+      </div>
+      <div style="margin-bottom:1.25rem;">
+        <div style="font-size:13px;font-weight:700;color:#18181b;margin-bottom:8px;">Round-by-round cooperation</div>
+        <div id="fin-history"></div>
+      </div>
+      <div style="border-top:1px solid #e4e4e7;padding-top:1rem;">
+        <div style="font-size:13px;font-weight:700;color:#18181b;margin-bottom:5px;">What just happened</div>
+        <div id="fin-reflection" style="font-size:13px;color:#52525b;line-height:1.6;"></div>
+      </div>
+    </div>
+    <button onclick="restart()" style="all:unset;display:block;width:100%;box-sizing:border-box;background:#18181b;color:#ffffff;border-radius:8px;padding:1rem 1.5rem;font-weight:700;cursor:pointer;font-size:15px;text-align:center;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">Play again</button>
+  </div>
+
+</div>
+
+<script>
+const CLASS=30,ROUNDS=5;
+let state;
+
+function init(){
+  const ai=[];
+  for(let i=0;i<CLASS-1;i++){
+    const type=i<4?'freerider':i<10?'opportunist':'naive';
+    ai.push({name:'Student '+(i+2),type,defectUrge:type==='freerider'?1:type==='opportunist'?0.35:0.1,total:0,choices:[]});
+  }
+  state={round:1,totalEarned:0,history:[],ai,cum:null};
+  setView('view-decision');
+  setText('hdr-round','1');
+  setText('dec-round','1');
+  document.getElementById('history-card').style.display='none';
+  document.getElementById('dec-pressure').innerHTML='';
+  document.getElementById('round-alert').innerHTML='';
+}
+
+function setView(id){
+  ['view-decision','view-results','view-final'].forEach(v=>{
+    document.getElementById(v).style.display=v===id?'block':'none';
+  });
+}
+
+function setText(id,val){document.getElementById(id).textContent=val;}
+
+function genAI(prevDef){
+  return state.ai.map(s=>{
+    if(s.type==='freerider')return'D';
+    s.defectUrge=Math.min(s.type==='opportunist'?0.95:0.9, s.defectUrge+prevDef*(s.type==='opportunist'?0.18:0.12));
+    return Math.random()<s.defectUrge?'D':'C';
+  });
+}
+
+function choose(pc){
+  const prevDef=state.history.length?(1-state.history[state.history.length-1].coopRate):0.15;
+  const aic=genAI(prevDef);
+  const totalC=aic.filter(x=>x==='C').length+(pc==='C'?1:0);
+  const cr=totalC/CLASS;
+  const fo=pc==='C'?totalC-1:totalC;
+  const sb=pc==='D'?2:0;
+  const earned=fo+sb;
+  state.totalEarned+=earned;
+
+  if(!state.cum){
+    state.cum=[{name:'You',isYou:true,total:0,choices:[]},...state.ai.map(s=>({name:s.name,isYou:false,type:s.type,total:0,choices:[]}))];
+  }
+  state.cum[0].choices.push(pc);
+  state.cum[0].total+=earned;
+  aic.forEach((c,i)=>{
+    const s=state.ai[i];
+    const oC=totalC-(c==='C'?1:0);
+    s.total+=(oC+(c==='D'?2:0));
+    s.choices.push(c);
+    state.cum[i+1].total=s.total;
+    state.cum[i+1].choices=[...s.choices];
+  });
+
+  const cE=[],dE=[];
+  aic.forEach((c,i)=>{const oC=totalC-(c==='C'?1:0);(c==='C'?cE:dE).push(oC+(c==='D'?2:0));});
+  (pc==='C'?cE:dE).push(earned);
+  const avgC=cE.length?Math.round(cE.reduce((a,b)=>a+b)/cE.length):0;
+  const avgD=dE.length?Math.round(dE.reduce((a,b)=>a+b)/dE.length):0;
+
+  state.history.push({pc,totalC,totalD:CLASS-totalC,cr,earned,avgC,avgD});
+  renderResults(earned,totalC,CLASS-totalC,cr,pc,avgC,avgD);
+}
+
+function ranked(){
+  const s=[...state.cum].sort((a,b)=>b.total-a.total);
+  s.forEach((x,i)=>x.rank=i+1);
+  return s;
+}
+
+function renderResults(earned,totalC,totalD,cr,pc,avgC,avgD){
+  setView('view-results');
+  document.getElementById('history-card').style.display=state.history.length>1?'block':'none';
+  setText('res-round',state.round);
+
+  const badge=(pc==='C')
+    ?'<span style="display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:#eaf3de;color:#3b6d11;">cooperated</span>'
+    :'<span style="display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:6px;background:#fcebeb;color:#a32d2d;">defected</span>';
+  document.getElementById('res-choice-label').innerHTML=badge;
+
+  setText('res-c',totalC);
+  setText('res-d',totalD);
+  setText('res-earned','$'+earned);
+  setText('res-total','$'+state.totalEarned);
+  setText('res-avg-c','$'+avgC);
+  setText('res-avg-d','$'+avgD);
+
+  const pct=Math.round(cr*100);
+  setText('res-coop-pct',pct+'%');
+  const bar=document.getElementById('res-bar');
+  bar.style.width=pct+'%';
+  bar.style.background=pct>50?'#639922':'#e24b4a';
+
+  let alert='';
+  if(pc==='C'&&avgD>avgC)
+    alert=`<div style="border-radius:8px;padding:0.75rem 1rem;font-size:13px;line-height:1.5;background:#faeeda;color:#854f0b;border:1.5px solid #ef9f27;margin-bottom:1rem;">⚠️ Defectors earned $${avgD} on average this round while you earned $${earned} by cooperating. The free-riders profited from your contribution.</div>`;
+  else if(pc==='C'&&totalD>=Math.floor(CLASS*0.5))
+    alert=`<div style="border-radius:8px;padding:0.75rem 1rem;font-size:13px;line-height:1.5;background:#faeeda;color:#854f0b;border:1.5px solid #ef9f27;margin-bottom:1rem;">⚠️ ${totalD} students defected. They kept a $2 bonus while your cooperation gave them free money.</div>`;
+  else if(pc==='D'&&avgD>avgC)
+    alert=`<div style="border-radius:8px;padding:0.75rem 1rem;font-size:13px;line-height:1.5;background:#fcebeb;color:#a32d2d;border:1.5px solid #f09595;margin-bottom:1rem;">💸 You defected — and it paid off. Defectors averaged $${avgD} vs. cooperators' $${avgC}. But if everyone thinks this way...</div>`;
+  else if(cr>=0.7)
+    alert=`<div style="border-radius:8px;padding:0.75rem 1rem;font-size:13px;line-height:1.5;background:#e6f1fb;color:#185fa5;border:1.5px solid #85b7eb;margin-bottom:1rem;">ℹ️ High cooperation this round (${pct}%). But the 4 free-riders still pocketed $2 each on top of everyone else's contributions.</div>`;
+  else if(cr<0.35)
+    alert=`<div style="border-radius:8px;padding:0.75rem 1rem;font-size:13px;line-height:1.5;background:#fcebeb;color:#a32d2d;border:1.5px solid #f09595;margin-bottom:1rem;">🔴 Cooperation has collapsed (${pct}%). Everyone is losing — this is the Tragedy of the Commons playing out in real time.</div>`;
+  document.getElementById('round-alert').innerHTML=alert;
+
+  const r=ranked();
+  const me=r.find(s=>s.isYou);
+  setText('standing-rank','#'+me.rank);
+  const bw=['top of the class','near the top','above average','around the middle','below average','near the bottom'];
+  setText('standing-context','$'+me.total+' earned so far — '+bw[Math.min(5,Math.floor((me.rank-1)/(CLASS/6)))]+'.');
+
+  const defs=r.filter(s=>!s.isYou&&s.choices[s.choices.length-1]==='D').sort((a,b)=>b.total-a.total);
+  const cops=r.filter(s=>!s.isYou&&s.choices[s.choices.length-1]==='C').sort((a,b)=>b.total-a.total);
+  setText('top-defector',defs.length?'$'+defs[0].total+' (rank #'+defs[0].rank+')':'none');
+  setText('top-cooperator',cops.length?'$'+cops[0].total+' (rank #'+cops[0].rank+')':'none');
+
+  const mx=r[0].total||1;
+  const lb=document.getElementById('leaderboard-rows');
+  lb.innerHTML='';
+  r.forEach(s=>{
+    const lc=s.choices[s.choices.length-1];
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid #e4e4e7;font-size:13px;'+(s.isYou?'background:#eff6ff;border-radius:4px;padding-left:4px;':'');
+    const bw2=Math.round((s.total/mx)*60);
+    const bc=s.isYou?'#378add':lc==='D'?'#e24b4a':'#639922';
+    const bb=lc==='C'?'#eaf3de':'#fcebeb';
+    const bt=lc==='C'?'#3b6d11':'#a32d2d';
+    row.innerHTML=`<span style="width:20px;text-align:right;color:#a1a1aa;font-size:11px;flex-shrink:0;">${s.rank}</span>
+      <span style="flex:1;color:${s.isYou?'#185fa5':'#18181b'};font-weight:${s.isYou?700:400};font-size:12px;">${s.isYou?'⭐ You':s.name}</span>
+      <span style="display:inline-block;font-size:10px;font-weight:700;padding:1px 4px;border-radius:4px;background:${bb};color:${bt};flex-shrink:0;">${lc}</span>
+      <div style="width:60px;background:#e4e4e7;border-radius:3px;height:5px;overflow:hidden;flex-shrink:0;"><div style="width:${bw2}px;height:100%;background:${bc};border-radius:3px;"></div></div>
+      <span style="width:32px;text-align:right;font-weight:700;color:${s.isYou?'#185fa5':'#18181b'};font-size:12px;flex-shrink:0;">$${s.total}</span>`;
+    lb.appendChild(row);
+  });
+  setTimeout(()=>{const el=lb.querySelector('[style*="eff6ff"]');if(el)el.scrollIntoView({block:'nearest'});},60);
+
+  renderHistory('history-rows');
+
+  // Pre-load pressure message for next round
+  const defRate=1-cr;
+  let pressure='';
+  if(defRate>=0.6){
+    pressure=`<div style="border-radius:8px;padding:0.75rem 1rem;font-size:13px;line-height:1.5;background:#fcebeb;color:#a32d2d;border:1.5px solid #f09595;">🔴 Last round ${Math.round(defRate*100)}% of your class defected. The top earners are defectors. Are you going to keep cooperating?</div>`;
+  } else if(defRate>=0.35){
+    const td=r.filter(s=>!s.isYou&&s.choices[s.choices.length-1]==='D')[0];
+    pressure=`<div style="border-radius:8px;padding:0.75rem 1rem;font-size:13px;line-height:1.5;background:#faeeda;color:#854f0b;border:1.5px solid #ef9f27;">⚠️ Free-riders are gaining. The top defector has $${td?td.total:'–'}. Will you cooperate again?</div>`;
+  }
+  document.getElementById('dec-pressure').innerHTML=pressure;
+
+  document.getElementById('next-btn').textContent=state.round>=ROUNDS?'See final results →':'Next round →';
+}
+
+function renderHistory(id){
+  const el=document.getElementById(id);
+  el.innerHTML='';
+  state.history.forEach((h,i)=>{
+    const pct=Math.round(h.cr*100);
+    const bc=pct>50?'#639922':'#e24b4a';
+    const bb=h.pc==='C'?'#eaf3de':'#fcebeb';
+    const bt=h.pc==='C'?'#3b6d11':'#a32d2d';
+    const d=document.createElement('div');
+    d.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:7px;';
+    d.innerHTML=`<span style="font-size:12px;color:#a1a1aa;width:52px;flex-shrink:0;">Round ${i+1}</span>
+      <span style="display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;background:${bb};color:${bt};flex-shrink:0;">${h.pc}</span>
+      <div style="flex:1;background:#e4e4e7;border-radius:4px;height:8px;overflow:hidden;"><div style="width:${pct}%;height:100%;border-radius:4px;background:${bc};"></div></div>
+      <span style="font-size:12px;color:#52525b;width:32px;text-align:right;flex-shrink:0;">${pct}%</span>
+      <span style="font-size:12px;font-weight:700;color:#18181b;width:32px;text-align:right;flex-shrink:0;">$${h.earned}</span>`;
+    el.appendChild(d);
+  });
+}
+
+function nextRound(){
+  if(state.round>=ROUNDS){showFinal();return;}
+  state.round++;
+  setText('hdr-round',state.round);
+  setText('dec-round',state.round);
+  setView('view-decision');
+}
+
+function showFinal(){
+  setView('view-final');
+  setText('hdr-round','–');
+  const r=ranked();
+  const me=r.find(s=>s.isYou);
+  const avgCoop=state.history.reduce((s,h)=>s+h.cr,0)/ROUNDS;
+  const clsAvg=(r.reduce((s,x)=>s+x.total,0)/CLASS).toFixed(1);
+  const finalCR=state.history[state.history.length-1].cr;
+
+  setText('fin-rank','#'+me.rank);
+  setText('fin-total','$'+state.totalEarned);
+  setText('fin-classavg','$'+clsAvg);
+  setText('fin-coop',Math.round(avgCoop*100)+'%');
+
+  const mx=r[0].total||1;
+  const flb=document.getElementById('fin-leaderboard');
+  flb.innerHTML='';
+  r.forEach(s=>{
+    const dc=s.choices.filter(c=>c==='D').length;
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:6px;padding:6px 4px;border-bottom:1px solid #e4e4e7;font-size:13px;'+(s.isYou?'background:#eff6ff;border-radius:4px;':'');
+    const bw2=Math.round((s.total/mx)*60);
+    const bc=s.isYou?'#378add':dc>ROUNDS/2?'#e24b4a':'#639922';
+    let ctag=dc===ROUNDS?`<span style="display:inline-block;font-size:10px;font-weight:700;padding:1px 4px;border-radius:4px;background:#fcebeb;color:#a32d2d;">all D</span>`
+      :dc===0?`<span style="display:inline-block;font-size:10px;font-weight:700;padding:1px 4px;border-radius:4px;background:#eaf3de;color:#3b6d11;">all C</span>`
+      :`<span style="display:inline-block;font-size:10px;font-weight:700;padding:1px 4px;border-radius:4px;background:#f4f4f0;color:#52525b;">${dc}D/${ROUNDS-dc}C</span>`;
+    row.innerHTML=`<span style="width:20px;text-align:right;color:#a1a1aa;font-size:11px;flex-shrink:0;">${s.rank}</span>
+      <span style="flex:1;color:${s.isYou?'#185fa5':'#18181b'};font-weight:${s.isYou?700:400};font-size:12px;">${s.isYou?'⭐ You':s.name}</span>
+      <span style="flex-shrink:0;">${ctag}</span>
+      <div style="width:60px;background:#e4e4e7;border-radius:3px;height:5px;overflow:hidden;flex-shrink:0;"><div style="width:${bw2}px;height:100%;background:${bc};border-radius:3px;"></div></div>
+      <span style="width:32px;text-align:right;font-weight:700;color:${s.isYou?'#185fa5':'#18181b'};font-size:12px;flex-shrink:0;">$${s.total}</span>`;
+    flb.appendChild(row);
+  });
+  setTimeout(()=>{const el=flb.querySelector('[style*="eff6ff"]');if(el)el.scrollIntoView({block:'center'});},100);
+
+  renderHistory('fin-history');
+
+  const myCoop=me.choices.filter(c=>c==='C').length;
+  const topDefs=r.slice(0,5).filter(s=>s.choices.filter(c=>c==='D').length>ROUNDS/2).length;
+  let ref='';
+  if(finalCR<0.3)ref=`Cooperation collapsed by the end — only ${Math.round(finalCR*100)}% cooperated in the final round. This is the Tragedy of the Commons: individually rational decisions (defecting to avoid being exploited) produced a collectively irrational outcome where almost everyone lost.`;
+  else if(topDefs>=3)ref=`Notice who's at the top of the leaderboard — mostly defectors. Even though cooperation would have made the whole class richer, free-riders captured the gains. This mirrors real commons like fisheries or public land: individual incentives undermine collective welfare.`;
+  else if(myCoop>=4)ref=`You cooperated ${myCoop} out of 5 rounds. If the class had done the same, everyone would have earned far more. But as defectors appeared, cooperation became harder to justify — this is why the commons fails: cooperators bear the cost while free-riders share the benefit.`;
+  else ref=`You switched to defecting as free-riders appeared — a rational response. But this is the tragedy: once defection feels rational, cooperation unravels for everyone. Real-world commons collapse the same way, even when everyone would prefer a world where cooperation held.`;
+  setText('fin-reflection',ref);
+}
+
+function restart(){
+  init();
+  setView('view-decision');
+}
+
+init();
+</script>
+</body>
+</html>
